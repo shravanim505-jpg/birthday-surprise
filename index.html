@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday rohit</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family: 'Poppins', sans-serif;
+}
+
+body{
+height:100vh;
+overflow:hidden;
+background:black;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+color:white;
+text-align:center;
+}
+
+video{
+position:fixed;
+right:0;
+bottom:0;
+min-width:100%;
+min-height:100%;
+z-index:-2;
+object-fit:cover;
+opacity:0.25;
+}
+
+.overlay{
+position:absolute;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+z-index:-1;
+}
+
+h1{
+font-size:4rem;
+animation:glow 2s infinite alternate;
+}
+
+p{
+margin-top:20px;
+font-size:1.5rem;
+width:80%;
+line-height:1.6;
+}
+
+button{
+margin-top:40px;
+padding:15px 35px;
+font-size:1.2rem;
+border:none;
+border-radius:50px;
+background:white;
+color:black;
+cursor:pointer;
+transition:0.3s;
+font-weight:bold;
+}
+
+button:hover{
+transform:scale(1.1);
+background:#ddd;
+}
+
+@keyframes glow{
+from{
+text-shadow:0 0 10px white,0 0 20px white;
+}
+to{
+text-shadow:0 0 20px white,0 0 40px white;
+}
+}
+
+.heart{
+position:absolute;
+color:white;
+font-size:20px;
+animation:float 6s linear infinite;
+}
+
+@keyframes float{
+0%{
+transform:translateY(100vh) scale(0);
+opacity:1;
+}
+100%{
+transform:translateY(-10vh) scale(1.5);
+opacity:0;
+}
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+pointer-events:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="overlay"></div>
+
+<h1>Happy Birthday Rohit 🎂</h1>
+
+<p>
+God bless you.  
+May you get everything that you want ✨🖤
+</p>
+
+<button onclick="surprise()">Open Surprise 🎁</button>
+
+<audio autoplay loop>
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=japanese-city-pop-1167.mp3" type="audio/mp3">
+</audio>
+
+<canvas id="fireworks"></canvas>
+
+<script>
+
+function surprise(){
+alert("You are special ✨ Happy Birthday Rohit 🖤");
+}
+
+function createHeart(){
+const heart=document.createElement("div");
+heart.classList.add("heart");
+heart.innerHTML="🤍";
+heart.style.left=Math.random()*100+"vw";
+heart.style.animationDuration=Math.random()*3+3+"s";
+document.body.appendChild(heart);
+
+setTimeout(()=>{
+heart.remove();
+},6000);
+}
+
+setInterval(createHeart,300);
+
+const canvas = document.getElementById('fireworks');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+class Particle{
+constructor(x,y,color){
+this.x=x;
+this.y=y;
+this.color=color;
+this.radius=2;
+this.speedX=(Math.random()-0.5)*6;
+this.speedY=(Math.random()-0.5)*6;
+this.alpha=1;
+}
+
+update(){
+this.x+=this.speedX;
+this.y+=this.speedY;
+this.alpha-=0.01;
+}
+
+draw(){
+ctx.save();
+ctx.globalAlpha=this.alpha;
+ctx.fillStyle=this.color;
+ctx.beginPath();
+ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
+ctx.fill();
+ctx.restore();
+}
+}
+
+function createFirework(){
+const x=Math.random()*canvas.width;
+const y=Math.random()*canvas.height/2;
+
+for(let i=0;i<100;i++){
+particles.push(new Particle(x,y,"white"));
+}
+}
+
+function animate(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+particles.forEach((particle,index)=>{
+particle.update();
+particle.draw();
+
+if(particle.alpha<=0){
+particles.splice(index,1);
+}
+});
+
+requestAnimationFrame(animate);
+}
+
+setInterval(createFirework,1500);
+
+animate();
+
+</script>
+
+</body>
+</html>
